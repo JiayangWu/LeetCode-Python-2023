@@ -1,10 +1,17 @@
 class Solution:
-    def vowelStrings(self, words: List[str], left: int, right: int) -> int:
-        vowels = "aeiuo"
-        res = 0
+    def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
+        vowelStringCount = [0 for _ in words]
+        VOWELS = set("aeiou")
+        for i in range(len(words)):
+            if words[i][0] in VOWELS and words[i][-1] in VOWELS:
+                vowelStringCount[i] = vowelStringCount[i - 1] + 1
+            else:
+                vowelStringCount[i] = vowelStringCount[i - 1]
 
-        for i in range(left, right + 1):
-            word = words[i]
-            if word and word[0] in vowels and word[-1] in vowels:
-                res += 1
-        return res 
+        res = []
+        for l, r in queries:
+            if l:
+                res.append(vowelStringCount[r] - vowelStringCount[l - 1])
+            else:
+                res.append(vowelStringCount[r])
+        return res
