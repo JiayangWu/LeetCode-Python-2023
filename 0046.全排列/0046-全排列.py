@@ -1,16 +1,17 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
+        n = len(nums)
+        path = [0] * n
         res = []
-        def dfs(tmp, nums):
-            if not nums:
-                res.append(tmp)
-            
-            for i, x in enumerate(nums):
-                dfs(tmp + [x], nums[:i] + nums[i + 1:])
-                
-        dfs([], nums)
+        def dfs(i, s):
+            if i == n:
+                res.append(path[:])
+                return
+
+            for char in s:
+                path[i] = char
+                dfs(i + 1, s - {char})
+
+        dfs(0, set(nums))
         return res
+                

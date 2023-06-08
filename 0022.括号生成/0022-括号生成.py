@@ -1,14 +1,13 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         res = []
-        def dfs(left, right, tmp):
-            if left == 0 and right == 0:
-                res.append(tmp)
-                return
-            if left > 0:
-                dfs(left - 1, right, tmp + "(")
-            if right > left:
-                dfs(left, right - 1, tmp + ")")
+        def dfs(left, right, path):
+            if left == right == 0:
+                res.append(path[:])
 
+            if left:
+                dfs(left - 1, right, path + "(")
+            if left < right:
+                dfs(left, right - 1, path + ")")
         dfs(n, n, "")
         return res
