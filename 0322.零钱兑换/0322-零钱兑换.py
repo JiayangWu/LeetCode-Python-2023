@@ -1,16 +1,16 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        # dp[i] = 1 + min(dp[i - coin[0], dp[i - coin[2], ...])
-        dp = [0] * (amount + 1)
-        dp[0] = 1
-        for i in range(amount + 1):
-            min_coin = float("inf")
+        n = len(coins)
 
-            for coin in coins:
-                if i >= coin and dp[i - coin] != 0:
-                    min_coin = min(min_coin, dp[i - coin])
-            
-            if min_coin != float("inf"):
-                dp[i] = 1 + min_coin
-        # print(dp)
-        return dp[amount] - 1
+        @cache
+        def dfs(i, c):
+            if i < 0:
+                return 0 if c == 0 else inf
+            if c < coins[i]:
+                return dfs(i - 1, c)
+            return min(dfs(i - 1, c), dfs(i, c - coins[i]) + 1)
+
+        ans = dfs(n - 1, amount)
+        return ans if ans < inf else -1
+
+        
